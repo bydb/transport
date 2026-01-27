@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+out/
+
+# Generated icons (keep source SVG)
+assets/icon.png
+assets/icon_*.png
+assets/icon.icns
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Config (user-specific)
+# ~/.config/transport/config.json is stored in user's home, not repo

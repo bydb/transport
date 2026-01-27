@@ -1,0 +1,30 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle with Gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a84ff"/>
+      <stop offset="100%" style="stop-color:#5856d6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Main Circle Background -->
+  <circle cx="256" cy="256" r="240" fill="url(#bgGradient)"/>
+
+  <!-- Paper/Document - leicht gedreht für Dynamik -->
+  <g transform="translate(256, 256) rotate(-8) translate(-256, -256)">
+    <rect x="145" y="100" width="180" height="230" rx="16" fill="white" opacity="0.3"/>
+  </g>
+
+  <!-- Vorderes Dokument -->
+  <rect x="165" y="130" width="180" height="230" rx="16" fill="white" opacity="0.95"/>
+
+  <!-- Textzeilen auf dem Dokument -->
+  <line x1="195" y1="185" x2="315" y2="185" stroke="#c0c0c0" stroke-width="10" stroke-linecap="round"/>
+  <line x1="195" y1="220" x2="295" y2="220" stroke="#c0c0c0" stroke-width="10" stroke-linecap="round"/>
+  <line x1="195" y1="255" x2="305" y2="255" stroke="#c0c0c0" stroke-width="10" stroke-linecap="round"/>
+  <line x1="195" y1="290" x2="270" y2="290" stroke="#c0c0c0" stroke-width="10" stroke-linecap="round"/>
+
+  <!-- Kleiner Checkmark/Häkchen unten rechts - symbolisiert "erledigt/transportiert" -->
+  <circle cx="370" cy="370" r="50" fill="white"/>
+  <path d="M345 370 L362 387 L395 354" stroke="#34c759" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
