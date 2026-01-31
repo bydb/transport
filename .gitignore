@@ -5,10 +5,8 @@ node_modules/
 dist/
 out/
 
-# Generated icons (keep source SVG)
-assets/icon.png
+# Generated icons (keep source SVG and icns)
 assets/icon_*.png
-assets/icon.icns
 
 # Logs
 *.log
