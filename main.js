@@ -4,13 +4,22 @@ const config = require('./lib/config');
 const transport = require('./lib/transport');
 const languageTool = require('./lib/languagetool');
 
-// App Icon als Data URL (wird für Dock-Icon verwendet)
-const iconPath = path.join(__dirname, 'assets', 'icon.svg');
+// Icon-Pfad ermitteln (funktioniert sowohl in Entwicklung als auch gepackt)
+function getIconPath() {
+  if (app.isPackaged) {
+    // In gepackter App: Icon liegt in resources/assets/
+    return path.join(process.resourcesPath, 'assets', 'icon.png');
+  }
+  // In Entwicklung: Icon liegt im Projektordner
+  return path.join(__dirname, 'assets', 'icon.png');
+}
 
 let mainWindow;
 let settingsWindow;
 
 function createMainWindow() {
+  const iconPath = getIconPath();
+
   mainWindow = new BrowserWindow({
     width: 600,
     height: 500,
@@ -18,7 +27,7 @@ function createMainWindow() {
     minHeight: 300,
     titleBarStyle: 'hiddenInset',
     backgroundColor: '#ffffff',
-    icon: path.join(__dirname, 'assets', 'icon.png'),
+    icon: iconPath,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -28,7 +37,7 @@ function createMainWindow() {
 
   // Set dock icon on macOS
   if (process.platform === 'darwin' && app.dock) {
-    app.dock.setIcon(path.join(__dirname, 'assets', 'icon.png'));
+    app.dock.setIcon(iconPath);
   }
 
   mainWindow.loadFile('src/index.html');
@@ -70,6 +79,14 @@ function createSettingsWindow() {
   settingsWindow.on('closed', () => {
     settingsWindow = null;
   });
+}
+
+// App-Name setzen
+app.name = 'Transport';
+
+// Linux: WM_CLASS setzen für korrektes Taskbar-Icon
+if (process.platform === 'linux') {
+  app.setDesktopName('transport.desktop');
 }
 
 app.whenReady().then(() => {

@@ -19,15 +19,15 @@ async function generateIcons() {
 
     console.log('✓ icon.png (512x512) erstellt');
 
-    // Generate different sizes for macOS
-    const sizes = [16, 32, 64, 128, 256, 512, 1024];
+    // Generate different sizes for Linux/macOS
+    const sizes = [16, 32, 64, 128, 256, 512];
     for (const size of sizes) {
-      const outputPath = path.join(__dirname, '..', 'assets', `icon_${size}x${size}.png`);
+      const outputPath = path.join(__dirname, '..', 'assets', `icon_${size}.png`);
       await sharp(svg)
         .resize(size, size)
         .png()
         .toFile(outputPath);
-      console.log(`✓ icon_${size}x${size}.png erstellt`);
+      console.log(`✓ icon_${size}.png erstellt`);
     }
 
     console.log('\n✅ Alle Icons erfolgreich generiert!');
