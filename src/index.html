@@ -11,10 +11,19 @@
   <div class="app">
     <!-- Toolbar -->
     <div class="toolbar">
-      <button id="transport-btn" class="btn-transport" disabled>
+      <button id="task-btn" class="btn-task" data-i18n-title="addTask">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+          <path d="M16 3v4"></path>
+          <path d="M8 3v4"></path>
+          <path d="M3 11h18"></path>
+          <path d="M9 16l2 2 4-4"></path>
+        </svg>
+      </button>
+      <button id="transport-btn" class="btn-transport" disabled data-i18n="transport">
         Transport
       </button>
-      <button id="settings-btn" class="btn-settings" title="Einstellungen">
+      <button id="settings-btn" class="btn-settings" data-i18n-title="settings">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="3"></circle>
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
@@ -23,19 +32,19 @@
     </div>
 
     <!-- Editor -->
-    <textarea id="editor" placeholder="Hier einfach lostippen..." autofocus></textarea>
+    <textarea id="editor" data-i18n-placeholder="placeholder" autofocus></textarea>
 
     <!-- Transport Modal -->
     <div id="transport-modal" class="modal hidden">
       <div class="modal-content">
-        <h2>Transport nach</h2>
+        <h2 data-i18n="transportTo">Transport nach</h2>
 
         <div class="destinations" id="destinations">
           <!-- Wird dynamisch gefüllt -->
         </div>
 
         <div class="tags-section">
-          <label>Tags:</label>
+          <label data-i18n="tags">Tags:</label>
           <div class="tags-container" id="tags-container">
             <!-- Wird dynamisch gefüllt -->
           </div>
@@ -44,13 +53,41 @@
         <div class="timestamp-section">
           <label>
             <input type="checkbox" id="add-timestamp" checked>
-            Zeitstempel hinzufügen
+            <span data-i18n="addTimestamp">Zeitstempel hinzufügen</span>
           </label>
         </div>
 
         <div class="modal-actions">
-          <button id="cancel-btn" class="btn-secondary">Abbrechen</button>
-          <button id="confirm-transport-btn" class="btn-primary" disabled>Transportieren</button>
+          <button id="cancel-btn" class="btn-secondary" data-i18n="cancel">Abbrechen</button>
+          <button id="confirm-transport-btn" class="btn-primary" disabled data-i18n="transportAction">Transportieren</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2 data-i18n="taskTitle">Task hinzufügen</h2>
+
+        <div class="form-group">
+          <label for="task-text" data-i18n="taskLabel">Aufgabe</label>
+          <input type="text" id="task-text" data-i18n-placeholder="taskPlaceholder">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="task-date" data-i18n="dateLabel">Datum</label>
+            <input type="date" id="task-date">
+          </div>
+          <div class="form-group">
+            <label for="task-time" data-i18n="timeLabel">Uhrzeit</label>
+            <input type="time" id="task-time" value="10:00">
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button id="cancel-task-btn" class="btn-secondary" data-i18n="cancel">Abbrechen</button>
+          <button id="confirm-task-btn" class="btn-primary" data-i18n="insert">Einfügen</button>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ const path = require('path');
 const config = require('./lib/config');
 const transport = require('./lib/transport');
 const languageTool = require('./lib/languagetool');
+const i18n = require('./lib/i18n');
 
 // Icon-Pfad ermitteln (funktioniert sowohl in Entwicklung als auch gepackt)
 function getIconPath() {
@@ -106,6 +107,15 @@ app.on('window-all-closed', () => {
 });
 
 // IPC Handlers
+
+// i18n - Get translations
+ipcMain.handle('i18n:getTranslations', async () => {
+  const lang = i18n.detectLanguage();
+  return {
+    lang,
+    translations: i18n.getTranslations(lang)
+  };
+});
 
 // Config
 ipcMain.handle('config:get', async () => {

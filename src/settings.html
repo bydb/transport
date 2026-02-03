@@ -354,8 +354,8 @@
 </head>
 <body>
   <div class="settings-header">
-    <h1>Einstellungen</h1>
-    <button class="close-btn" id="close-btn" title="Schließen">
+    <h1 data-i18n="settingsTitle">Einstellungen</h1>
+    <button class="close-btn" id="close-btn" data-i18n-title="cancel">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="18" y1="6" x2="6" y2="18"></line>
         <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -366,25 +366,25 @@
   <!-- Destinations Section -->
   <div class="section">
     <div class="section-header">
-      <h2>Zielorte</h2>
-      <button class="add-btn" id="add-destination-btn">+ Hinzufügen</button>
+      <h2 data-i18n="destinations">Zielorte</h2>
+      <button class="add-btn" id="add-destination-btn" data-i18n="add">+ Hinzufügen</button>
     </div>
 
     <div class="add-form" id="add-destination-form">
       <div class="form-group">
-        <label>Name</label>
-        <input type="text" id="dest-name" placeholder="z.B. Inbox">
+        <label data-i18n="name">Name</label>
+        <input type="text" id="dest-name" data-i18n-placeholder="namePlaceholder">
       </div>
       <div class="form-group">
-        <label>Ordner</label>
+        <label data-i18n="folder">Ordner</label>
         <div class="form-row">
-          <input type="text" id="dest-path" placeholder="/Users/...">
-          <button class="browse-btn" id="browse-btn">Auswählen</button>
+          <input type="text" id="dest-path" data-i18n-placeholder="folderPlaceholder">
+          <button class="browse-btn" id="browse-btn" data-i18n="select">Auswählen</button>
         </div>
       </div>
       <div class="form-actions">
-        <button class="btn-secondary" id="cancel-dest-btn">Abbrechen</button>
-        <button class="btn-primary" id="save-dest-btn">Speichern</button>
+        <button class="btn-secondary" id="cancel-dest-btn" data-i18n="cancel">Abbrechen</button>
+        <button class="btn-primary" id="save-dest-btn" data-i18n="save">Speichern</button>
       </div>
     </div>
 
@@ -396,18 +396,18 @@
   <!-- Tags Section -->
   <div class="section">
     <div class="section-header">
-      <h2>Tags</h2>
-      <button class="add-btn" id="add-tag-btn">+ Hinzufügen</button>
+      <h2 data-i18n="tagsSection">Tags</h2>
+      <button class="add-btn" id="add-tag-btn" data-i18n="add">+ Hinzufügen</button>
     </div>
 
     <div class="add-form" id="add-tag-form">
       <div class="form-group">
-        <label>Tag Name</label>
-        <input type="text" id="tag-name" placeholder="z.B. projekt">
+        <label data-i18n="tagName">Tag Name</label>
+        <input type="text" id="tag-name" data-i18n-placeholder="tagPlaceholder">
       </div>
       <div class="form-actions">
-        <button class="btn-secondary" id="cancel-tag-btn">Abbrechen</button>
-        <button class="btn-primary" id="save-tag-btn">Hinzufügen</button>
+        <button class="btn-secondary" id="cancel-tag-btn" data-i18n="cancel">Abbrechen</button>
+        <button class="btn-primary" id="save-tag-btn" data-i18n="add">Hinzufügen</button>
       </div>
     </div>
 
@@ -418,27 +418,27 @@
 
   <!-- Filename Format Section -->
   <div class="section">
-    <h2 style="margin-bottom: 12px;">Dateiname</h2>
+    <h2 style="margin-bottom: 12px;" data-i18n="filename">Dateiname</h2>
     <div class="form-group">
-      <label>Format</label>
+      <label data-i18n="format">Format</label>
       <input type="text" id="filename-format" placeholder="{timestamp} - {title}">
       <div class="format-help">
-        <code>{timestamp}</code> = YYYYMMDDHHMM (z.B. 202601270901)<br>
-        <code>{title}</code> = Erste Zeile des Textes
+        <code>{timestamp}</code> <span data-i18n="timestampHelp">= YYYYMMDDHHMM (z.B. 202601270901)</span><br>
+        <code>{title}</code> <span data-i18n="titleHelp">= Erste Zeile des Textes</span>
       </div>
     </div>
     <div class="format-preview">
-      Vorschau: <span id="filename-preview">202601270901 - Meine Notiz.md</span>
+      <span data-i18n="preview">Vorschau</span>: <span id="filename-preview">202601270901 - Meine Notiz.md</span>
     </div>
   </div>
 
   <!-- LanguageTool Section -->
   <div class="section">
-    <h2 style="margin-bottom: 12px;">Grammatikkorrektur</h2>
+    <h2 style="margin-bottom: 12px;" data-i18n="grammarCheck">Grammatikkorrektur</h2>
     <div class="toggle-row">
       <div>
-        <div class="toggle-label">LanguageTool aktivieren</div>
-        <div class="toggle-desc">Automatische Rechtschreib- und Grammatikprüfung beim Transport</div>
+        <div class="toggle-label" data-i18n="enableLanguageTool">LanguageTool aktivieren</div>
+        <div class="toggle-desc" data-i18n="languageToolDesc">Automatische Rechtschreib- und Grammatikprüfung beim Transport</div>
       </div>
       <label class="toggle-switch">
         <input type="checkbox" id="languagetool-enabled">

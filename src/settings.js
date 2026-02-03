@@ -29,9 +29,51 @@ const filenamePreview = document.getElementById('filename-preview');
 // State
 let config = null;
 let editingDestinationIndex = null; // Track which destination is being edited
+let i18n = null; // Translations
+
+// Apply translations to DOM
+function applyTranslations() {
+  if (!i18n) return;
+
+  // Text content
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (i18n.translations[key]) {
+      el.textContent = i18n.translations[key];
+    }
+  });
+
+  // Placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.dataset.i18nPlaceholder;
+    if (i18n.translations[key]) {
+      el.placeholder = i18n.translations[key];
+    }
+  });
+
+  // Titles
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const key = el.dataset.i18nTitle;
+    if (i18n.translations[key]) {
+      el.title = i18n.translations[key];
+    }
+  });
+
+  // Update html lang attribute
+  document.documentElement.lang = i18n.lang;
+}
+
+// Get translation
+function t(key) {
+  return i18n?.translations?.[key] || key;
+}
 
 // Initialize
 async function init() {
+  // Load translations first
+  i18n = await window.api.getTranslations();
+  applyTranslations();
+
   config = await window.api.getConfig();
   renderDestinations();
   renderTags();
@@ -49,7 +91,7 @@ closeBtn.addEventListener('click', () => {
 
 function renderDestinations() {
   if (config.destinations.length === 0) {
-    destinationsList.innerHTML = '<div class="empty-message">Noch keine Zielorte konfiguriert</div>';
+    destinationsList.innerHTML = `<div class="empty-message">${t('noDestinationsConfigured')}</div>`;
     return;
   }
 
@@ -60,8 +102,8 @@ function renderDestinations() {
         <div class="list-item-path">${escapeHtml(dest.path)}</div>
       </div>
       <div class="list-item-actions">
-        <button class="edit-btn" data-index="${index}">Bearbeiten</button>
-        <button class="delete-btn" data-index="${index}">Entfernen</button>
+        <button class="edit-btn" data-index="${index}">${t('edit')}</button>
+        <button class="delete-btn" data-index="${index}">${t('remove')}</button>
       </div>
     </div>
   `).join('');
@@ -94,7 +136,7 @@ function editDestination(index) {
   destPathInput.value = dest.path;
 
   // Update button text
-  saveDestBtn.textContent = 'Aktualisieren';
+  saveDestBtn.textContent = t('update');
 
   addDestinationForm.classList.add('visible');
   destNameInput.focus();
@@ -105,7 +147,7 @@ addDestinationBtn.addEventListener('click', () => {
   editingDestinationIndex = null;
   destNameInput.value = '';
   destPathInput.value = '';
-  saveDestBtn.textContent = 'Speichern';
+  saveDestBtn.textContent = t('save');
   addDestinationForm.classList.add('visible');
   destNameInput.focus();
 });
@@ -116,7 +158,7 @@ cancelDestBtn.addEventListener('click', () => {
   destNameInput.value = '';
   destPathInput.value = '';
   editingDestinationIndex = null;
-  saveDestBtn.textContent = 'Speichern';
+  saveDestBtn.textContent = t('save');
 });
 
 // Browse for folder
@@ -150,7 +192,7 @@ saveDestBtn.addEventListener('click', async () => {
   destNameInput.value = '';
   destPathInput.value = '';
   editingDestinationIndex = null;
-  saveDestBtn.textContent = 'Speichern';
+  saveDestBtn.textContent = t('save');
 
   renderDestinations();
 });
@@ -172,7 +214,7 @@ destPathInput.addEventListener('keydown', (e) => {
 
 function renderTags() {
   if (config.tags.length === 0) {
-    tagsList.innerHTML = '<span style="color: var(--secondary-color)">Noch keine Tags konfiguriert</span>';
+    tagsList.innerHTML = `<span style="color: var(--secondary-color)">${t('noTagsConfigured')}</span>`;
     return;
   }
 

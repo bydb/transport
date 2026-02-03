@@ -2,21 +2,70 @@
 const editor = document.getElementById('editor');
 const transportBtn = document.getElementById('transport-btn');
 const settingsBtn = document.getElementById('settings-btn');
+const taskBtn = document.getElementById('task-btn');
 const transportModal = document.getElementById('transport-modal');
+const taskModal = document.getElementById('task-modal');
 const destinationsContainer = document.getElementById('destinations');
 const tagsContainer = document.getElementById('tags-container');
 const addTimestampCheckbox = document.getElementById('add-timestamp');
 const cancelBtn = document.getElementById('cancel-btn');
 const confirmTransportBtn = document.getElementById('confirm-transport-btn');
+const taskTextInput = document.getElementById('task-text');
+const taskDateInput = document.getElementById('task-date');
+const taskTimeInput = document.getElementById('task-time');
+const cancelTaskBtn = document.getElementById('cancel-task-btn');
+const confirmTaskBtn = document.getElementById('confirm-task-btn');
 const statusEl = document.getElementById('status');
 
 // State
 let config = null;
 let selectedDestination = null;
 let selectedTags = new Set();
+let i18n = null; // Translations
+
+// Apply translations to DOM
+function applyTranslations() {
+  if (!i18n) return;
+
+  // Text content
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (i18n.translations[key]) {
+      el.textContent = i18n.translations[key];
+    }
+  });
+
+  // Placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.dataset.i18nPlaceholder;
+    if (i18n.translations[key]) {
+      el.placeholder = i18n.translations[key];
+    }
+  });
+
+  // Titles
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const key = el.dataset.i18nTitle;
+    if (i18n.translations[key]) {
+      el.title = i18n.translations[key];
+    }
+  });
+
+  // Update html lang attribute
+  document.documentElement.lang = i18n.lang;
+}
+
+// Get translation
+function t(key) {
+  return i18n?.translations?.[key] || key;
+}
 
 // Initialize
 async function init() {
+  // Load translations first
+  i18n = await window.api.getTranslations();
+  applyTranslations();
+
   config = await window.api.getConfig();
 
   // Enable transport button when text is entered
@@ -58,8 +107,8 @@ function renderDestinations() {
   if (config.destinations.length === 0) {
     destinationsContainer.innerHTML = `
       <div class="no-destinations">
-        Keine Zielorte konfiguriert.<br>
-        <a id="open-settings-link">Einstellungen öffnen</a>
+        ${t('noDestinations')}<br>
+        <a id="open-settings-link">${t('openSettings')}</a>
       </div>
     `;
     document.getElementById('open-settings-link').addEventListener('click', () => {
@@ -101,7 +150,7 @@ function renderDestinations() {
 // Render Tags
 function renderTags() {
   if (config.tags.length === 0) {
-    tagsContainer.innerHTML = '<span style="color: var(--secondary-color)">Keine Tags konfiguriert</span>';
+    tagsContainer.innerHTML = `<span style="color: var(--secondary-color)">${t('noTags')}</span>`;
     return;
   }
 
@@ -151,7 +200,7 @@ confirmTransportBtn.addEventListener('click', async () => {
 
   // Disable button during transport
   confirmTransportBtn.disabled = true;
-  confirmTransportBtn.textContent = 'Transportiere...';
+  confirmTransportBtn.textContent = t('transporting');
 
   try {
     const result = await window.api.transport({
@@ -170,21 +219,104 @@ confirmTransportBtn.addEventListener('click', async () => {
       transportModal.classList.add('hidden');
 
       // Show success message
-      showStatus('Erfolgreich transportiert!', 'success');
+      showStatus(t('transportSuccess'), 'success');
     } else {
-      showStatus(`Fehler: ${result.error}`, 'error');
+      showStatus(`${t('error')}: ${result.error}`, 'error');
     }
   } catch (error) {
-    showStatus(`Fehler: ${error.message}`, 'error');
+    showStatus(`${t('error')}: ${error.message}`, 'error');
   } finally {
     confirmTransportBtn.disabled = false;
-    confirmTransportBtn.textContent = 'Transportieren';
+    confirmTransportBtn.textContent = t('transportAction');
   }
 });
 
 // Settings
 settingsBtn.addEventListener('click', () => {
   window.api.openSettings();
+});
+
+// ============ TASK FUNCTIONALITY ============
+
+// Open Task Modal
+taskBtn.addEventListener('click', () => {
+  // Set default date to today
+  const today = new Date();
+  const dateStr = today.toISOString().split('T')[0];
+  taskDateInput.value = dateStr;
+  taskTimeInput.value = '10:00';
+  taskTextInput.value = '';
+
+  taskModal.classList.remove('hidden');
+  taskTextInput.focus();
+});
+
+// Cancel Task
+cancelTaskBtn.addEventListener('click', () => {
+  taskModal.classList.add('hidden');
+});
+
+// Close task modal on backdrop click
+taskModal.addEventListener('click', (e) => {
+  if (e.target === taskModal) {
+    taskModal.classList.add('hidden');
+  }
+});
+
+// Confirm Task - Insert into editor
+confirmTaskBtn.addEventListener('click', () => {
+  const taskText = taskTextInput.value.trim();
+  const taskDate = taskDateInput.value;
+  const taskTime = taskTimeInput.value;
+
+  if (!taskText) {
+    taskTextInput.focus();
+    return;
+  }
+
+  // Format: - [ ] Aufgabe (@[[2026-02-01]] 10:00)
+  let taskLine = `- [ ] ${taskText}`;
+
+  if (taskDate) {
+    taskLine += ` (@[[${taskDate}]]`;
+    if (taskTime) {
+      taskLine += ` ${taskTime}`;
+    }
+    taskLine += ')';
+  }
+
+  // Insert at cursor position or append
+  const cursorPos = editor.selectionStart;
+  const textBefore = editor.value.substring(0, cursorPos);
+  const textAfter = editor.value.substring(editor.selectionEnd);
+
+  // Add newline if needed
+  const needsNewlineBefore = textBefore.length > 0 && !textBefore.endsWith('\n');
+  const needsNewlineAfter = textAfter.length > 0 && !textAfter.startsWith('\n');
+
+  const insertion = (needsNewlineBefore ? '\n' : '') + taskLine + (needsNewlineAfter ? '\n' : '');
+
+  editor.value = textBefore + insertion + textAfter;
+
+  // Update cursor position
+  const newCursorPos = cursorPos + insertion.length;
+  editor.selectionStart = newCursorPos;
+  editor.selectionEnd = newCursorPos;
+
+  // Enable transport button
+  transportBtn.disabled = editor.value.trim().length === 0;
+
+  // Hide modal and focus editor
+  taskModal.classList.add('hidden');
+  editor.focus();
+});
+
+// Enter key in task text input
+taskTextInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    confirmTaskBtn.click();
+  }
 });
 
 // Show status message
@@ -199,9 +331,14 @@ function showStatus(message, type) {
 
 // Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
-  // Escape to close modal
-  if (e.key === 'Escape' && !transportModal.classList.contains('hidden')) {
-    transportModal.classList.add('hidden');
+  // Escape to close modals
+  if (e.key === 'Escape') {
+    if (!transportModal.classList.contains('hidden')) {
+      transportModal.classList.add('hidden');
+    }
+    if (!taskModal.classList.contains('hidden')) {
+      taskModal.classList.add('hidden');
+    }
   }
 
   // Cmd/Ctrl + Enter to transport
@@ -213,6 +350,12 @@ document.addEventListener('keydown', (e) => {
   if ((e.metaKey || e.ctrlKey) && e.key === ',') {
     e.preventDefault();
     window.api.openSettings();
+  }
+
+  // Cmd/Ctrl + T for task
+  if ((e.metaKey || e.ctrlKey) && e.key === 't') {
+    e.preventDefault();
+    taskBtn.click();
   }
 });
 
