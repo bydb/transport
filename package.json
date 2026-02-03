@@ -44,7 +44,7 @@
         "deb"
       ],
       "category": "Utility",
-      "icon": "assets"
+      "icon": "assets/icon.png"
     }
   }
 }
