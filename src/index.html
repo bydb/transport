@@ -20,6 +20,12 @@
           <path d="M9 16l2 2 4-4"></path>
         </svg>
       </button>
+      <button id="preview-btn" class="btn-preview" data-i18n-title="togglePreview">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </button>
       <button id="transport-btn" class="btn-transport" disabled data-i18n="transport">
         Transport
       </button>
@@ -33,6 +39,9 @@
 
     <!-- Editor -->
     <textarea id="editor" data-i18n-placeholder="placeholder" autofocus></textarea>
+
+    <!-- Markdown Preview -->
+    <div id="preview" class="hidden"></div>
 
     <!-- Transport Modal -->
     <div id="transport-modal" class="modal hidden">
@@ -92,10 +101,14 @@
       </div>
     </div>
 
+    <!-- Format Context Menu -->
+    <div id="format-menu" class="format-menu hidden"></div>
+
     <!-- Status Message -->
     <div id="status" class="status hidden"></div>
   </div>
 
+  <script src="markdown.js"></script>
   <script src="renderer.js"></script>
 </body>
 </html>
