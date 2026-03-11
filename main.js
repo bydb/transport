@@ -159,7 +159,7 @@ ipcMain.handle('languagetool:check', async (event, text) => {
 });
 
 // Transport
-ipcMain.handle('transport:execute', async (event, { text, destination, tags, addTimestamp }) => {
+ipcMain.handle('transport:execute', async (event, { text, destination, tags, addTimestamp, category }) => {
   try {
     const cfg = config.load();
 
@@ -176,7 +176,8 @@ ipcMain.handle('transport:execute', async (event, { text, destination, tags, add
       destination,
       tags,
       addTimestamp,
-      filenameFormat: cfg.filenameFormat || '{timestamp} - {title}'
+      filenameFormat: cfg.filenameFormat || '{timestamp} - {title}',
+      category: category || '🟢'
     });
 
     return { success: true, filePath };

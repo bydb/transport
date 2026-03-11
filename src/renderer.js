@@ -23,6 +23,7 @@ const previewBtn = document.getElementById('preview-btn');
 let config = null;
 let selectedDestination = null;
 let selectedTags = new Set();
+let selectedCategory = '🟢'; // Default: Wissen/Guide
 let previewVisible = false;
 let i18n = null; // Translations
 
@@ -112,6 +113,9 @@ transportBtn.addEventListener('click', async () => {
   // Render tags
   renderTags();
 
+  // Init category buttons
+  initCategoryButtons();
+
   // Set timestamp default
   addTimestampCheckbox.checked = config.addTimestamp;
 
@@ -194,6 +198,19 @@ function renderTags() {
   });
 }
 
+// Init Category Buttons
+function initCategoryButtons() {
+  const buttons = document.querySelectorAll('.category-btn');
+  buttons.forEach(btn => {
+    btn.classList.toggle('selected', btn.dataset.category === selectedCategory);
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedCategory = btn.dataset.category;
+    });
+  });
+}
+
 // Update confirm button state
 function updateConfirmButton() {
   confirmTransportBtn.disabled = !selectedDestination;
@@ -227,7 +244,8 @@ confirmTransportBtn.addEventListener('click', async () => {
       text,
       destination: selectedDestination,
       tags: Array.from(selectedTags),
-      addTimestamp: addTimestampCheckbox.checked
+      addTimestamp: addTimestampCheckbox.checked,
+      category: selectedCategory
     });
 
     if (result.success) {

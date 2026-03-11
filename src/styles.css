@@ -470,6 +470,59 @@ body {
   white-space: nowrap;
 }
 
+/* ============ CATEGORY ============ */
+.category-section {
+  margin-bottom: 16px;
+}
+
+.category-section label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.category-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.category-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-family);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.category-btn:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.category-btn.selected {
+  border-color: var(--accent-color);
+  background: var(--tag-selected);
+  color: var(--text-primary);
+}
+
+.category-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
 /* ============ TAGS ============ */
 .tags-section {
   margin-bottom: 16px;
